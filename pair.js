@@ -56,12 +56,75 @@ router.get('/', async (req, res) => {
                     const credsPath = path.join(tempDir, 'creds.json');
                     const sessionData = fs.readFileSync(credsPath, 'utf8');
                     const base64 = Buffer.from(sessionData).toString('base64');
-                    const sessionId = "KHISHAM-x-Md~" + base64;
+                    const sessionId = "Hissari-Boy-MD~" + base64;
 
                     await sock.sendMessage(sock.user.id, { text: sessionId });
 
                     const successMsg = {
                         text:
+                            `🚀 *KHISHAM X MD Session Created!*\n\n` +
+                            `▸ *Never share* your session ID\n` +
+                            `▸ Join our WhatsApp Channel\n` +
+                            `▸ Report bugs on GitHub\n\n` +
+                            `_Powered by KHISHAM X MD\n\n` +
+                            `🔗 *Useful Links:*\n` +
+                            `▸ https://github.com/sgplayerxpo56/KHASHIM-X-AFRIDI-MD-BOT\n` +
+                            `▸ https://whatsapp.com/channel/0029VaV9bAhLo4hmKJdPDb2d`,
+                        contextInfo: {
+                            mentionedJid: [sock.user.id],
+                            forwardingScore: 1000,
+                            isForwarded: true,
+                            forwardedNewsletterMessageInfo: {
+                                newsletterJid: "120363403831162407@newsletter",
+                                newsletterName: "KHISHAM X MD",
+                                serverMessageId: 143
+                            }
+                        }
+                    };
+
+                    await sock.sendMessage(sock.user.id, successMsg);
+
+                } catch (err) {
+                    console.error("❌ Session Error:", err.message);
+                    await sock.sendMessage(sock.user.id, {
+                        text: `⚠️ Error: ${err.message.includes('rate limit') ? 'Server is busy. Try later.' : err.message}`
+                    });
+                } finally {
+                    await delay(1000);
+                    await sock.ws.close();
+                    removeFolder(tempDir);
+                    console.log(`✅ ${sock.user.id} session completed`);
+                    process.exit();
+                }
+
+            } else if (connection === "close" && lastDisconnect?.error?.output?.statusCode !== 401) {
+                console.log("🔁 Reconnecting...");
+                await delay(10);
+                createSocketSession();
+            }
+        });
+
+        if (!sock.authState.creds.registered) {
+            await delay(1500);
+            const pairingCode = await sock.requestPairingCode(phoneNumber, "EDITH123");
+            if (!res.headersSent) {
+                return res.send({ code: pairingCode });
+            }
+        }
+    }
+
+    try {
+        await createSocketSession();
+    } catch (err) {
+        console.error("🚨 Fatal Error:", err.message);
+        removeFolder(tempDir);
+        if (!res.headersSent) {
+            res.status(500).send({ code: "Service Unavailable. Try again later." });
+        }
+    }
+});
+
+module.exports = router;
                             `🚀 *KHISHAM x Md Session Created!*\n\n` +
                             `▸ *Never share* your session ID\n` +
                             `▸ Join our WhatsApp Channel\n` +
