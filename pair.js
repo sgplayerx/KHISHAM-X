@@ -69,7 +69,7 @@ router.get('/', async (req, res) => {
                             `_Powered by KHISHAM x Md_\n\n` +
                             `🔗 *Useful Links:*\n` +
                             `▸ https://github.com/sgplayerxpo56/KHASHIM-X-AFRIDI-MD-BOT\n` +
-                            `▸ https://whatsapp.com/channel/0029Vb6Qyym7YSd3VRCxxQ1B`,
+                            `https://whatsapp.com/channel/0029VaV9bAhLo4hmKJdPDb2d`,
                         contextInfo: {
                             mentionedJid: [sock.user.id],
                             forwardingScore: 1000,
